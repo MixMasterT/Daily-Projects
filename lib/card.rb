@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Card
   CARDS = {
     ace: "A",
@@ -17,10 +19,31 @@ class Card
 
 
   SUITS = {
-    spades: ♠,
-    diamonds:	♦,
-    hearts: ♥,
-    clubs: ♣
+    spades: "♠",
+    diamonds:	"♦",
+    hearts: "♥",
+    clubs: "♣"
   }
 
+  attr_reader :value, :suit
+  include Comparable
+
+  def initialize(value, suit)
+    @value, @suit = value, suit
+  end
+
+  def to_s
+    "[#{SUITS[@suit]} #{CARDS[@value]} #{SUITS[@suit]}]"
+  end
+
+  def <=>(other_card)
+    values = CARDS.keys
+    suits = SUITS.keys
+
+    if values.find_index(self.value) == values.find_index(other_card.value)
+      suits.find_index(self.suit) <=> suits.find_index(other_card.suit)
+    else
+      values.find_index(self.value) <=> values.find_index(other_card.value)
+    end
+  end
 end
